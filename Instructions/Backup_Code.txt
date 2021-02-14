@@ -1,0 +1,43 @@
+pragma solidity ^0.5.0;
+
+// lvl 1: equal split
+contract AssociateProfitSplitter {
+    address payable employee_one =;
+    address payable employee_two =;
+    address payable employee_three =;
+    address payable human_resources = ;
+    
+    uint balanceContract 
+    constructor(address payable _one, address payable _two, address payable _three) public {
+        employee_one = _one;
+        employee_two = _two;
+        employee_three = _three;
+    }
+
+    function balance() public view returns(uint) {
+        return address(this).balance;
+    }
+
+    function deposit(address payable _one, address payable _two, address payable _three) public payable {
+        require((msg.sender == human_resources),"Not authorized to execute transfer.");
+        
+        // Split `msg.value` into three
+        uint amount = msg.value/3
+
+        // Transfer the amount to each employee
+        _one.transfer(amount)
+        _two.transfer(amount)
+        _three.transfer(amount)
+
+        // Take care of a potential remainder by sending back to HR (`msg.sender`)
+        balanceContract = (msg.value - amount*3)
+        
+        if balanceContract > 0:
+            msg.sender.transfer(balanceContract)
+    }
+
+    function() external payable {
+        // Enforce that the `deposit` function is called in the fallback function!
+        deposit()
+    }
+}
